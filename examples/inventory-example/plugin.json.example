@@ -1,0 +1,7 @@
+{
+    "name": "Inventory Event Example",
+    "version": "0.1.0",
+    "contactEmailAddress": "REPLACE_WITH_YOUR_CONTACT_EMAIL",
+    "requiredPermissions": [],
+    "optionalPermissions": []
+}

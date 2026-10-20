@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "Lua 5.4",
+  "runtime.path": ["?.lua", "?/init.lua", "plugins/?/?.lua", "plugins/?/?/?.lua"],
+  "workspace.library": ["types/rs3"],
+  "workspace.checkThirdParty": false,
+  "workspace.ignoreDir": ["vendor", "luarocks"],
+  "diagnostics.enable": true,
+  "hint.enable": true
+}
+

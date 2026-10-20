@@ -1,0 +1,10 @@
+.DS_Store
+.vscode/*.log
+.luacov.stats.out
+__pycache__/
+*.pyc
+luarocks/
+vendor/
+*.rock
+*.zip
+

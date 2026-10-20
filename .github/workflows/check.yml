@@ -1,0 +1,44 @@
+name: Lua checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.4 and LuaRocks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 liblua5.4-dev luarocks
+          sudo luarocks --lua-version=5.4 install luacheck
+          sudo luarocks --lua-version=5.4 install busted
+      - name: Validate generated API declaration coverage
+        run: |
+          python3 tools/validate_types.py
+          python3 -m unittest discover -s tools -p 'test_*.py'
+      - name: Install pinned Lua Language Server
+        run: |
+          cd "$RUNNER_TEMP"
+          curl --fail --location --silent --show-error \
+            https://github.com/LuaLS/lua-language-server/releases/download/3.19.2/lua-language-server-3.19.2-linux-x64.tar.gz \
+            --output luals.tar.gz
+          echo '93ad326b10f6c00911dd8c450fa098332dbd8f9f45d1052f5636a2d54479b947  luals.tar.gz' | sha256sum --check
+          mkdir -p luals
+          tar --no-same-owner --extract --gzip --file luals.tar.gz --directory luals
+      - name: Validate LuaLS annotations (warnings fail CI)
+        run: |
+          "$RUNNER_TEMP/luals/bin/lua-language-server" \
+            --check="$GITHUB_WORKSPACE" \
+            --checklevel=Warning \
+            --check_format=pretty
+      - name: Lint handwritten Lua only
+        run: luacheck plugins tests
+      - name: Check formatting (handwritten Lua only)
+        run: npx --yes @johnnymorganz/stylua-bin@2.6.0 --check plugins tests
+      - name: Run pure-Lua unit tests
+        run: busted tests
+
