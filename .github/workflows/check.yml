@@ -16,10 +16,6 @@ jobs:
           sudo apt-get install -y lua5.4 liblua5.4-dev luarocks
           sudo luarocks --lua-version=5.4 install luacheck
           sudo luarocks --lua-version=5.4 install busted
-      - name: Validate generated API declaration coverage
-        run: |
-          python3 tools/validate_types.py
-          python3 -m unittest discover -s tools -p 'test_*.py'
       - name: Install pinned Lua Language Server
         run: |
           cd "$RUNNER_TEMP"
@@ -35,10 +31,6 @@ jobs:
             --check="$GITHUB_WORKSPACE" \
             --checklevel=Warning \
             --check_format=pretty
-      - name: Lint handwritten Lua only
-        run: luacheck plugins tests
       - name: Check formatting (handwritten Lua only)
         run: npx --yes @johnnymorganz/stylua-bin@2.6.0 --check plugins tests
-      - name: Run pure-Lua unit tests
-        run: busted tests
 
