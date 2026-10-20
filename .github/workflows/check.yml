@@ -32,5 +32,5 @@ jobs:
             --checklevel=Warning \
             --check_format=pretty
       - name: Check formatting (handwritten Lua only)
-        run: npx --yes @johnnymorganz/stylua-bin@2.6.0 --check plugins tests
+        run: npx --yes @johnnymorganz/stylua-bin@2.6.0 --check examples
 
